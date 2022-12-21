@@ -4,14 +4,12 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
-  updateProfile,
   onAuthStateChanged,
 } from "firebase/auth";
 import { showNotification } from "@mantine/notifications";
-import { getUserList } from "utils/query";
-// import { updateUserByEmail } from "../utils/query";
-// import { db } from "../firebase";
-// import { setDoc, doc } from "firebase/firestore/lite";
+import { getUserList, getUser } from "utils/query";
+import { db } from "../firebase";
+import { setDoc, doc } from "firebase/firestore/lite";
 
 const AuthContext = React.createContext();
 const provider = new GoogleAuthProvider();
@@ -23,6 +21,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [unRegisteredUser, setUnRegisteredUser] = useState();
   const [currentUser, setCurrentUser] = useState();
+  const [user, setUser] = useState();
   const [fetchingUserList, setFetchingUserList] = useState(true);
   const [loading, setLoading] = useState(true);
 
@@ -43,8 +42,23 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
-  function updateUserProfile(user, params) {
-    return updateProfile(user, params);
+  async function updateUserProfile({ name, color }) {
+    try {
+      await setDoc(doc(db, "Users", currentUser.email), {
+        name,
+        email: currentUser.email,
+        color,
+      });
+      setUser(currentUser.email);
+      setUnRegisteredUser();
+    } catch (error) {
+      showNotification({
+        title: "Something went wrong, you will be logged out.",
+        message: error,
+        color: "red",
+      });
+      logout();
+    }
   }
 
   async function getRegisteredUser() {
@@ -52,6 +66,8 @@ export function AuthProvider({ children }) {
       const userList = await getUserList();
       if (!userList.includes(currentUser.email))
         setUnRegisteredUser(currentUser);
+      const _user = await getUser(userList, currentUser.email);
+      setUser(_user);
       setFetchingUserList(false);
     } catch (error) {
       showNotification({
@@ -79,6 +95,7 @@ export function AuthProvider({ children }) {
   }, [currentUser, loading]);
 
   const value = {
+    user,
     unRegisteredUser,
     loading,
     fetchingUserList,

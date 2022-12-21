@@ -11,9 +11,7 @@ root.render(
   <React.StrictMode>
     <MantineProvider
       theme={{
-        fontFamily: "Verdana, sans-serif",
-        fontFamilyMonospace: "Monaco, Courier, monospace",
-        headings: { fontFamily: "Greycliff CF, sans-serif" },
+        colorScheme: "dark",
         colors: {
           primaryColor: "blue",
         },

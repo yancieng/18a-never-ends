@@ -4,14 +4,13 @@ import Home from "pages/Home";
 import Register from "pages/user/Register";
 
 function App() {
-  const { loading, fetchingUserList, currentUser, unRegisteredUser } =
-    useAuth();
+  const { loading, fetchingUserList, user, unRegisteredUser } = useAuth();
 
   if (loading || fetchingUserList) return null;
 
   if (unRegisteredUser) return <Register />;
 
-  return currentUser ? <Home /> : <Login />;
+  return user ? <Home /> : <Login />;
 }
 
 export default App;

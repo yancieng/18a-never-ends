@@ -5,7 +5,12 @@ const Layout = ({ children }) => {
     <Box
       sx={(theme) => ({
         color: "#fff",
-        backgroundColor: theme.colors.gray[9],
+        background: theme.fn.linearGradient(
+          45,
+          theme.colors.dark[7],
+          theme.colors.dark[5]
+        ),
+
         maxWidth: "480px",
         width: "100%",
         padding: "20px",

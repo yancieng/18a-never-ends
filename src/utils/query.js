@@ -5,3 +5,7 @@ export const getUserList = async () => {
   const list = await getDocs(collection(db, "Users"));
   return list?.docs?.map((doc) => doc.id);
 };
+
+export const getUser = async (userList, email) => {
+  return userList?.docs?.find((doc) => doc.id === email).data();
+};
