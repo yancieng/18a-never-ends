@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from "pages/user/Login";
+import { useAuth } from "contexts/AuthContext";
+import Home from "pages/Home";
+import Register from "pages/user/Register";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const { loading, fetchingUserList, currentUser, unRegisteredUser } =
+    useAuth();
+
+  if (loading || fetchingUserList) return null;
+
+  if (unRegisteredUser) return <Register />;
+
+  return currentUser ? <Home /> : <Login />;
 }
 
 export default App;
