@@ -63,10 +63,11 @@ export function AuthProvider({ children }) {
 
   async function getRegisteredUser() {
     try {
-      const userList = await getUserList();
+      const userListDoc = await getUserList();
+      const userList = userListDoc?.docs?.map((doc) => doc.id);
       if (!userList.includes(currentUser.email))
         setUnRegisteredUser(currentUser);
-      const _user = await getUser(userList, currentUser.email);
+      const _user = await getUser(userListDoc, currentUser.email);
       setUser(_user);
       setFetchingUserList(false);
     } catch (error) {
