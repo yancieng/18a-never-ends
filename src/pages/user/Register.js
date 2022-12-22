@@ -61,19 +61,21 @@ const Register = () => {
   return (
     <Layout>
       <Box sx={(theme) => ({ color: theme.colors.gray[6], float: "right" })}>
-        <IoCloseSharp size="20px" onClick={logout} />
+        <IoCloseSharp size="2em" onClick={logout} />
       </Box>
       <Box
-        sx={{
+        sx={(theme) => ({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          marginTop: "50px",
+          marginTop: "11vh",
           "& input": {
             textAlign: "center",
-            fontSize: "36px",
+            fontSize: "2.5em",
+            fontFamily: "Rubik, sans-serif",
+            color: theme.colors.pink[6],
           },
-        }}
+        })}
       >
         <UserIcon newUser={{ name, color }} size="lg" />
         <Text
@@ -85,7 +87,7 @@ const Register = () => {
         </Text>
 
         <Input
-          mt="50px"
+          mt="8vh"
           variant="unstyled"
           placeholder="Your Name..."
           value={name}
@@ -94,12 +96,11 @@ const Register = () => {
         />
 
         <Button
-          mt="xl"
-          size="lg"
+          mt="21vh"
+          size="md"
           disabled={!name}
           rightIcon={<BiRightArrow />}
-          variant="gradient"
-          gradient={{ from: "blue", to: "pink" }}
+          color="cyan"
           onClick={handleContinue}
           loading={loading}
         >

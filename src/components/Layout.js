@@ -7,10 +7,9 @@ const Layout = ({ children }) => {
         color: "#fff",
         background: theme.fn.linearGradient(
           45,
-          theme.colors.dark[7],
-          theme.colors.dark[5]
+          theme.colors.dark[8],
+          theme.colors.dark[7]
         ),
-
         maxWidth: "480px",
         width: "100%",
         padding: "20px",
