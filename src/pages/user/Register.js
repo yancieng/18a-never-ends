@@ -22,12 +22,12 @@ const Register = ({ closeEdit }) => {
   const newUser = !Boolean(closeEdit);
 
   const [show, setShow] = useState(false);
-  const [name, setName] = useState(registeredUser.name || "");
+  const [name, setName] = useState(registeredUser?.name || "");
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [colorScheme, setColorScheme] = useState();
   const [color, setColor] = useState(
-    registeredUser.color ||
+    registeredUser?.color ||
       ColorSchemes[Math.floor(Math.random() * ColorSchemes.length)]
   );
 
