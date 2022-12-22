@@ -26,7 +26,6 @@ export function AuthProvider({ children }) {
   async function login() {
     try {
       await signInWithPopup(auth, provider);
-      getRegisteredUser();
     } catch (error) {
       showNotification({
         title: "Login failed",
@@ -42,11 +41,13 @@ export function AuthProvider({ children }) {
 
   async function getRegisteredUser(user) {
     try {
+      console.log(user);
       const userListDoc = await getUserList();
       const registeredUser = getUser(
         userListDoc,
         user?.email || currentUser?.email
       );
+      console.log(user?.email, registeredUser);
       setRegisteredUser(registeredUser);
     } catch (error) {
       showNotification({
