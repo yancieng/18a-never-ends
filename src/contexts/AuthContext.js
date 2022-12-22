@@ -40,10 +40,13 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
-  async function getRegisteredUser() {
+  async function getRegisteredUser(user) {
     try {
       const userListDoc = await getUserList();
-      const registeredUser = getUser(userListDoc, currentUser?.email);
+      const registeredUser = getUser(
+        userListDoc,
+        user?.email || currentUser?.email
+      );
       setRegisteredUser(registeredUser);
     } catch (error) {
       showNotification({
@@ -75,8 +78,8 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user || { email: "yancieng@gmail.com" });
-      getRegisteredUser();
+      setCurrentUser(user);
+      getRegisteredUser(user);
       setLoading(false);
     });
 

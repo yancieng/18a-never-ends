@@ -12,9 +12,6 @@ root.render(
     <MantineProvider
       theme={{
         colorScheme: "dark",
-        colors: {
-          primaryColor: "blue",
-        },
       }}
     >
       <NotificationsProvider>

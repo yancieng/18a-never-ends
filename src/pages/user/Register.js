@@ -1,34 +1,34 @@
 import { useState } from "react";
 import Layout from "components/Layout";
 import { useAuth } from "contexts/AuthContext";
-import { Box, Text, Input, Button, Drawer } from "@mantine/core";
+import {
+  Box,
+  Text,
+  Input,
+  Button,
+  Drawer,
+  ColorSwatch,
+  useMantineTheme,
+} from "@mantine/core";
 import UserIcon from "components/UserIcon";
 import { BiRightArrow } from "react-icons/bi";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { IoCloseSharp } from "react-icons/io5";
-import { COLOR_SCHEME } from "components/UserIcon";
 
-const Register = () => {
+const Register = ({ closeEdit }) => {
+  const { logout, updateUserProfile, registeredUser } = useAuth();
+  const theme = useMantineTheme();
+  const ColorSchemes = Object.keys(theme.colors);
+  const newUser = !Boolean(closeEdit);
+
   const [show, setShow] = useState(false);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(registeredUser.name || "");
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [colorScheme, setColorScheme] = useState();
   const [color, setColor] = useState(
-    COLOR_SCHEME[Math.floor(Math.random() * COLOR_SCHEME.length)]
-  );
-  const { logout, updateUserProfile } = useAuth();
-
-  const ColorBox = ({ size, color, code, onClick }) => (
-    <Box
-      onClick={onClick}
-      sx={(theme) => ({
-        width: size || "60px",
-        height: size || "60px",
-        backgroundColor: theme.colors[color][code],
-        borderRadius: "50%",
-      })}
-    ></Box>
+    registeredUser.color ||
+      ColorSchemes[Math.floor(Math.random() * ColorSchemes.length)]
   );
 
   const handlePickColorScheme = (color) => {
@@ -56,15 +56,16 @@ const Register = () => {
     setLoading(true);
     await updateUserProfile({ name, color });
     setLoading(false);
+    !newUser && closeEdit();
   };
 
   return (
     <Layout>
-      <Box sx={(theme) => ({ color: theme.colors.gray[6], float: "right" })}>
-        <IoCloseSharp size="2em" onClick={logout} />
+      <Box sx={{ color: theme.colors.gray[6], float: "right" }}>
+        <IoCloseSharp size="2em" onClick={newUser ? logout : closeEdit} />
       </Box>
       <Box
-        sx={(theme) => ({
+        sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -75,16 +76,18 @@ const Register = () => {
             fontFamily: "Rubik, sans-serif",
             color: theme.colors.pink[6],
           },
-        })}
+        }}
       >
         <UserIcon newUser={{ name, color }} size="lg" />
-        <Text
+        <Button
+          variant="subtle"
+          color="dark"
           mt="md"
           sx={{ textDecoration: "underline" }}
           onClick={() => setShow(true)}
         >
           change color
-        </Text>
+        </Button>
 
         <Input
           mt="8vh"
@@ -104,7 +107,7 @@ const Register = () => {
           onClick={handleContinue}
           loading={loading}
         >
-          Let's go!
+          {newUser ? "Let's go!" : "Save"}
         </Button>
       </Box>
 
@@ -127,12 +130,12 @@ const Register = () => {
                 gridColumnGap: "10px",
               }}
             >
-              {COLOR_SCHEME.map((color) => (
-                <ColorBox
+              {ColorSchemes.map((color) => (
+                <ColorSwatch
                   key={color}
-                  color={color}
-                  code={6}
+                  color={theme.colors[color][6]}
                   onClick={() => handlePickColorScheme(color)}
+                  size="60px"
                 />
               ))}
             </Box>
@@ -142,11 +145,10 @@ const Register = () => {
           <Box p="md">
             <AiOutlineArrowLeft size="18px" onClick={handleBack} />
             <Box sx={{ width: "fit-content", margin: "0 auto" }}>
-              <ColorBox
-                size="100px"
-                color={colorScheme}
-                code={6}
+              <ColorSwatch
+                color={theme.colors[colorScheme][6]}
                 onClick={handleBack}
+                size="100px"
               />
             </Box>
             <Text mt="md" mb="md">
@@ -162,11 +164,11 @@ const Register = () => {
               }}
             >
               {[...Array(10)].map((_, code) => (
-                <ColorBox
+                <ColorSwatch
                   key={code}
-                  color={colorScheme}
-                  code={code}
+                  color={theme.colors[colorScheme][code]}
                   onClick={() => handlePickColor(code)}
+                  size="60px"
                 />
               ))}
             </Box>

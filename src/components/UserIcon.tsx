@@ -2,23 +2,6 @@ import * as React from "react";
 import { useAuth } from "contexts/AuthContext";
 import { Box } from "@mantine/core";
 
-export const COLOR_SCHEME = [
-  "dark",
-  "gray",
-  "red",
-  "pink",
-  "grape",
-  "violet",
-  "indigo",
-  "blue",
-  "cyan",
-  "teal",
-  "green",
-  "lime",
-  "yellow",
-  "orange",
-];
-
 const UserIcon = ({
   newUser,
   size,
@@ -28,20 +11,25 @@ const UserIcon = ({
   size: "sm" | "md" | "lg";
   sx?: Record<string, any>;
 }) => {
-  const { user } = useAuth();
+  const { registeredUser } = useAuth();
 
   const Width = {
     sm: "30px",
-    md: "50px",
+    md: "25px",
     lg: "160px",
   };
   const FontSize = {
     sm: "16px",
-    md: "26px",
+    md: "14px",
     lg: "80px",
   };
+  const BorderSize = {
+    sm: "1px",
+    md: "2px",
+    lg: "3px",
+  };
 
-  const { name, color } = newUser || user;
+  const { name, color } = newUser || registeredUser;
 
   const getInitial = () => name?.substring(0, 1)?.toUpperCase();
   const getColorCode = () => color?.split("-");
@@ -65,7 +53,7 @@ const UserIcon = ({
         fontSize: FontSize[size],
         backgroundColor: getColor(theme),
         borderRadius: "50%",
-        border: "3px solid",
+        border: `${BorderSize[size]} solid`,
         borderColor: theme.colors.cyan[6],
         ...sx,
       })}
