@@ -7,7 +7,7 @@ import { useAuth } from "contexts/AuthContext";
 const Header = ({ current, editProfile }) => {
   const { registeredUser, logout } = useAuth();
   return (
-    <Flex sx={{ justifyContent: "space-between" }} mb="2vh">
+    <Flex sx={{ justifyContent: "space-between" }} p="20px">
       <Text sx={{ fontWeight: 700, fontFamily: "Exo, sans-serif" }} size="lg">
         {current}
       </Text>

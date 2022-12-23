@@ -65,11 +65,12 @@ const Register = ({ closeEdit }) => {
         <IoCloseSharp size="2em" onClick={newUser ? logout : closeEdit} />
       </Box>
       <Box
+        pt="12vh"
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          marginTop: "11vh",
+
           "& input": {
             textAlign: "center",
             fontSize: "2.5em",

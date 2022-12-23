@@ -6,6 +6,7 @@ import Navigator, { MENU } from "components/Navigator";
 import Header from "components/Header";
 import Today from "pages/today";
 import Tasks from "./tasks";
+import { Flex, Box } from "@mantine/core";
 
 const VIEW_MAP = {
   [MENU.today]: <Today />,
@@ -24,9 +25,11 @@ const Home = () => {
 
   return (
     <Layout>
-      <Header current={current} editProfile={() => setEditPage(true)} />
-      {VIEW_MAP[current]}
-      <Navigator current={current} setCurrent={setCurrent} />
+      <Flex direction="column" sx={{ height: "100%" }}>
+        <Header current={current} editProfile={() => setEditPage(true)} />
+        <Box sx={{ flexGrow: 1 }}>{VIEW_MAP[current]}</Box>
+        <Navigator current={current} setCurrent={setCurrent} />
+      </Flex>
     </Layout>
   );
 };

@@ -16,7 +16,7 @@ const Login = () => {
   };
   return (
     <Layout>
-      <Box mt="12vh" sx={{ textAlign: "center" }}>
+      <Box pt="13vh" sx={{ textAlign: "center" }}>
         <img src={mainLogo} alt="logo" />
 
         <Button

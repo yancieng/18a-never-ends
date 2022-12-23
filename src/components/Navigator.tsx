@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { BsListCheck, BsCalendar3 } from "react-icons/bs";
 import { HiSpeakerphone } from "react-icons/hi";
 import { CgList } from "react-icons/cg";
@@ -39,12 +39,11 @@ const MenuItem = ({
   handleCurrent: () => void;
   children: any;
 }) => (
-  <Box
+  <Flex
     onClick={handleCurrent}
-    sx={(theme) => ({
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+    direction="column"
+    align="center"
+    sx={(theme: any) => ({
       margin: "0 20px",
       fontSize: "12px",
       lineHeight: "30px",
@@ -56,7 +55,7 @@ const MenuItem = ({
     })}
   >
     {children}
-  </Box>
+  </Flex>
 );
 
 const Navigator = ({
@@ -66,17 +65,13 @@ const Navigator = ({
   current: MENU;
   setCurrent: any;
 }) => (
-  <Box
-    sx={(theme) => ({
-      position: "absolute",
-      bottom: "0",
+  <Flex
+    justify="space-between"
+    align="center"
+    sx={(theme: any) => ({
       backgroundColor: theme.colors.dark[7],
       height: "70px",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
       width: "100%",
-      right: "0",
     })}
   >
     {MENU_LIST.map((item) => (
@@ -89,7 +84,7 @@ const Navigator = ({
         {item.name}
       </MenuItem>
     ))}
-  </Box>
+  </Flex>
 );
 
 export default Navigator;

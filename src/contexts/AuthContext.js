@@ -8,8 +8,8 @@ import {
 } from "firebase/auth";
 import { showNotification } from "@mantine/notifications";
 import { db } from "../firebase";
-import { setDoc, doc } from "firebase/firestore/lite";
-import { getUser, getUserList } from "utils/query";
+import { setDoc, doc } from "firebase/firestore";
+import { useUsers } from "./UsersContext";
 
 const AuthContext = React.createContext();
 const provider = new GoogleAuthProvider();
@@ -22,6 +22,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
   const [registeredUser, setRegisteredUser] = useState("unset");
+  const { fetchUserList, getUser } = useUsers();
 
   async function login() {
     try {
@@ -39,24 +40,9 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
-  async function getRegisteredUser(user) {
-    try {
-      console.log(user);
-      const userListDoc = await getUserList();
-      const registeredUser = getUser(
-        userListDoc,
-        user?.email || currentUser?.email
-      );
-      console.log(user?.email, registeredUser);
-      setRegisteredUser(registeredUser);
-    } catch (error) {
-      showNotification({
-        title: "Something went wrong, you will be logged out.",
-        message: error.toString(),
-        color: "red",
-      });
-      logout();
-    }
+  function getRegisteredUser(user) {
+    const registeredUser = getUser(user?.email || currentUser?.email);
+    setRegisteredUser(registeredUser);
   }
 
   async function updateUserProfile({ name, color }) {
@@ -66,14 +52,13 @@ export function AuthProvider({ children }) {
         email: currentUser.email,
         color,
       });
-      getRegisteredUser();
+      fetchUserList();
     } catch (error) {
       showNotification({
-        title: "Something went wrong, you will be logged out.",
+        title: "Something went wrong",
         message: error.toString(),
         color: "red",
       });
-      logout();
     }
   }
 
@@ -81,6 +66,8 @@ export function AuthProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       getRegisteredUser(user);
+      // setCurrentUser(user || { email: "yancieng@gmail.com" });
+      // getRegisteredUser(user || { email: "yancieng@gmail.com" });
       setLoading(false);
     });
 
