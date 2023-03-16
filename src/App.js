@@ -1,15 +1,13 @@
-// import Login from "pages/user/Login";
-// import { useAuth } from "contexts/AuthContext";
-// import Home from "pages/Home";
-import Test from 'pages/Test'
+import Login from "pages/user/Login";
+import { useAuth } from "contexts/AuthContext";
+import Home from "pages/Home";
 
 function App() {
-  // const { currentUser, loading } = useAuth();
+  const { currentUser, loading } = useAuth();
 
-  // if (loading) return null;
+  if (loading) return null;
 
-  // return currentUser ? <Home /> : <Login />;
-  return  <Test />
+  return currentUser ? <Home /> : <Login />;
 }
 
 export default App;
